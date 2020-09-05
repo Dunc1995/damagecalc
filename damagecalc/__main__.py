@@ -3,7 +3,7 @@ import logging
 import os
 import damagecalc.utils.csv as csv
 
-def user_arguments():
+def get_user_arguments():
     '''Lists the required/optional arguments for the damagecalc script and returns an args object.'''
     parser = argparse.ArgumentParser(description='Tool for calculating the expected £\'s of damage for a quantifiable level of flood risk.')
     parser.add_argument('--input_depths', '-i', type=str, help='Input .csv file for depth data.', required=True)
@@ -15,10 +15,15 @@ def user_arguments():
 
 def main():
     '''Entry point for the damage calculator script.'''
-    args = user_arguments()
-    csv.get_dict_from_csv(args.input_depths)
-    csv.get_dict_from_csv(args.input_vulnerability_curve)
+    args = get_user_arguments()
+    logging.basicConfig(filename='./damagecalc.log', filemode='w', level=args.log_verbosity*10) #? This will dump a log file wherever the user has navigated to.
 
-if __name__ == "__main__":
-    main()
+    try: #? If an exception is raised at this point, you can assume that the application has failed.
+        csv.get_dict_from_csv(args.input_depths)
+        csv.get_dict_from_csv(args.input_vulnerability_curve)
+        
+    except Exception as e:
+        exception_string = str(e)
+        print(exception_string)
+        logging.fatal(exception_string)
     

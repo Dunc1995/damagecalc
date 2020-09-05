@@ -6,3 +6,4 @@ def get_dict_from_csv(file_path: str, newline=''):
         reader = csv.reader(f)
         for row in reader:
             print(row)
+            
