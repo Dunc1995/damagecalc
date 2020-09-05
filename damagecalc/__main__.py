@@ -1,27 +1,23 @@
 import argparse
 import logging
 import os
+import damagecalc.utils.csv as csv
 
-def main():
-    '''Entry point for the damage calculator script'''
+def user_arguments():
+    '''Lists the required/optional arguments for the damagecalc script and returns an args object.'''
     parser = argparse.ArgumentParser(description='Tool for calculating the expected £\'s of damage for a quantifiable level of flood risk.')
+    parser.add_argument('--input_depths', '-i', type=str, help='Input .csv file for depth data.', required=True)
+    parser.add_argument('--input_vulnerability_curve', '-c', type=str, help='Input .csv file for a vulnerability curve.', required=True)
     parser.add_argument('--log_verbosity', '-v', type=int, default=2, help='Logging verbosity (1 to 5) - level 1 is most verbose, level 5 logs critical entries only.')
     args = parser.parse_args()
 
-# def write_to_file(file_path: str, contents: str):
-#     with open(file_path, 'w+') as file:
-#         file.write(contents)
-#         file.close()
+    return args
 
-def value_in_range(lower_limit: int, upper_limit: int, depth):
-    '''Tests whether a given depth value is within the specified range'''
-
-    if lower_limit > upper_limit:
-        raise Exception('Error at value_in_range - your lower limit cannot be greater than your upper limit!')
-    in_range = lower_limit < depth < upper_limit
-    
-    return in_range
-
+def main():
+    '''Entry point for the damage calculator script.'''
+    args = user_arguments()
+    csv.get_dict_from_csv(args.input_depths)
+    csv.get_dict_from_csv(args.input_vulnerability_curve)
 
 if __name__ == "__main__":
     main()
