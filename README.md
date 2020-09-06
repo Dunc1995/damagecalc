@@ -13,13 +13,22 @@ python setup.py install
 ## Usage
 After installation, you should be able to run the script like any normal CLI tool:
 ```
-(env)  ~/ damagecalc --help
-usage: damagecalc [-h] [--log_verbosity LOG_VERBOSITY]
+~/repos/damagecalc damagecalc --help
+usage: damagecalc [-h] --input_depths INPUT_DEPTHS --input_vulnerability_curve INPUT_VULNERABILITY_CURVE [--currency CURRENCY] [--output_file OUTPUT_FILE]
+                  [--log_verbosity LOG_VERBOSITY]
 
 Tool for calculating the expected £'s of damage for a quantifiable level of flood risk.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --input_depths INPUT_DEPTHS, -d INPUT_DEPTHS
+                        Input .csv file for depth data.
+  --input_vulnerability_curve INPUT_VULNERABILITY_CURVE, -vc INPUT_VULNERABILITY_CURVE
+                        Input .csv file for a vulnerability curve.
+  --currency CURRENCY, -c CURRENCY
+                        Currency for the vulnerability curve
+  --output_file OUTPUT_FILE, -o OUTPUT_FILE
+                        Output file path for the damage cost results.
   --log_verbosity LOG_VERBOSITY, -v LOG_VERBOSITY
                         Logging verbosity (1 to 5) - level 1 is most verbose, level 5 logs critical entries only.
 ```
