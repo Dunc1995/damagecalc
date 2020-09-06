@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     # Application name:
-    name="Python_Developer_Coding_Challenge",
+    name="Flood_Damage_Calculator",
 
     # Version number (initial):
     version="0.1.0",
@@ -18,7 +18,7 @@ setup(
     include_package_data=True,
 
     # Details
-    url="https://github.com/Dunc1995/python_developer_coding_challenge",
+    url="https://github.com/Dunc1995/damagecalc",
 
     #
     license="LICENSE",
