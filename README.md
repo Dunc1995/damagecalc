@@ -1,4 +1,4 @@
-# Python Developer Coding Challenge
+# damagecalc
 ## Installation
 Navigate to this repos directory and run the following command:
 ```
