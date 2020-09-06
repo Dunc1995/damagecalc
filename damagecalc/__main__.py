@@ -18,7 +18,7 @@ def main():
     args = get_user_arguments()
     logging.basicConfig(filename='./damagecalc.log', filemode='w', level=args.log_verbosity*10) #? This will dump a log file wherever the user has navigated to.
 
-    try: #? If an exception is raised at this point, you can assume that the application has failed.
+    try: #? If an exception is raised at this point, you can assume that the application has failed completely.
         csv.get_dict_from_csv(args.input_depths)
         csv.get_dict_from_csv(args.input_vulnerability_curve)
         
