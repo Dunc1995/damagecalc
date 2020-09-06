@@ -9,8 +9,8 @@
             "type": "python",
             "request": "launch",
             "program": "damagecalc",
-            "args": [ ],
-            "env": { "PYTHONPATH": "../" },
+            "args": [ "-i", "depths.csv", "-c", "vulnerability_curve.csv" ],
+            "env": { "PYTHONPATH": "${workspaceRoot}" },
             "console": "integratedTerminal"
         }
     ]
