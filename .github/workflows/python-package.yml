@@ -40,3 +40,6 @@ jobs:
     - name: Run script installation
       run: |
         python setup.py install
+    - name: Call script from CLI
+      run: |
+        damagecalc --help
