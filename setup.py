@@ -30,7 +30,7 @@ setup(
 
     entry_points={
     'console_scripts': [
-        'damagecalc = damagecalc.__main__:main'
+        'damagecalc = damagecalc.damagecalc:main'
     ]
     }
 )
