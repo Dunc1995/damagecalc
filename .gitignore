@@ -127,4 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-*.csv
+vulnerability_curve.csv
+depths.csv
+damagecalc_results.csv
