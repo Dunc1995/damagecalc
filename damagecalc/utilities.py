@@ -66,12 +66,12 @@ class vulnerability_curve():
 
         return in_range
 
-def calculate_damage_costs(file_path: str, input_function, newline='', starting_index=1):
+def calculate_damage_costs(file_path: str, output_file: str, input_function, newline='', starting_index=1):
     '''Reads data rows in a .csv file and calls input_function() for every row. The output values can be found in damagecalc_results.csv'''
     cost_output = 0
     count = 0
 
-    with open('./damagecalc_results.csv', 'w', newline='') as fo:
+    with open(output_file, 'w', newline='') as fo:
         fieldnames = ['depth', 'damage_cost']
         writer = csv.DictWriter(fo, fieldnames=fieldnames)
         writer.writeheader()

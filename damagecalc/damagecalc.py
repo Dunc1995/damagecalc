@@ -40,7 +40,7 @@ def main():
 
     try: #? If an exception is raised at this point, you can assume that the application has failed completely.
         vc = utils.vulnerability_curve(args.input_vulnerability_curve)
-        total_cost, count = utils.calculate_damage_costs(args.input_depths, vc.get_flood_damage_value)
+        total_cost, count = utils.calculate_damage_costs(args.input_depths, args.output_file, vc.get_flood_damage_value)
 
         print('''
         -----------------------------
