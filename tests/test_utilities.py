@@ -28,6 +28,20 @@ class TestUtilities(unittest.TestCase):
 
         self.test_output = join(self.test_data_root, 'testing.csv')
 
+    def test_total_cost_is_correct_for_normal_data(self):
+        
+        # Assume
+        actual_total_cost = 1086500.0
+
+        # Action
+        calculated_total_cost, count, erroneous_data_count = utils.calculate_damage_costs(
+            self.normal_depths, self.test_output, self.vulnerability_curve_class)
+
+        # Assert
+        self.assertEqual(calculated_total_cost, actual_total_cost)
+        self.assertEqual(count, 10)
+        self.assertEqual(erroneous_data_count, 0)
+
     def test_inconsistent_data_rows_are_counted_when_found(self):
         # Assume
         number_of_inconsistent_data_rows = 2
