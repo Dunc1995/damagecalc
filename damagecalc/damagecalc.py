@@ -24,6 +24,8 @@ def get_arguments():
     parser.add_argument('--log_verbosity', '-v', type=int, default=2, help='Logging verbosity (1 to 5) - level 1 is most verbose, level 5 logs critical entries only.')
     args = parser.parse_args()
 
+    logging.basicConfig(filename='./damagecalc.log', filemode='w', level=args.log_verbosity*10) #? This will dump a log file wherever the user has navigated to.
+
     for path in [ args.input_depths, args.input_vulnerability_curve ]:
         check_file_exists(path)
         check_is_file_csv(path)
@@ -32,25 +34,25 @@ def get_arguments():
 
     return args
 
+def run_script(input_vulnerability_curve: str, input_depths: str, output_file: str, currency: str):
+    '''Use this function if importing damagecalc for another script.'''
+
+    vc = utils.vulnerability_curve(input_vulnerability_curve)
+    total_cost, count = utils.calculate_damage_costs(input_depths, output_file, vc.get_flood_damage_value)
+
+    print('''
+    -----------------------------
+    Total Cost: {}{:,.2f}
+    Depth Values Processed: {}
+    -----------------------------
+    '''.format(currency, total_cost, count))
+
 def main():
     '''Entry point for the damage calculator script.'''
-
-    args = get_arguments()
-    logging.basicConfig(filename='./damagecalc.log', filemode='w', level=args.log_verbosity*10) #? This will dump a log file wherever the user has navigated to.
-
-    try: #? If an exception is raised at this point, you can assume that the application has failed completely.
-        vc = utils.vulnerability_curve(args.input_vulnerability_curve)
-        total_cost, count = utils.calculate_damage_costs(args.input_depths, args.output_file, vc.get_flood_damage_value)
-
-        print('''
-        -----------------------------
-        Total Cost: {}{:,.2f}
-        Depth Values Processed: {}
-        -----------------------------
-        '''.format(args.currency, total_cost, count))
-
+    try:
+        args = get_arguments()
+        run_script(args.input_vulnerability_curve, args.input_depths, args.output_file, args.currency)
     except Exception as e:
         exception_string = str(e)
         print(exception_string)
         logging.fatal(exception_string)
-    

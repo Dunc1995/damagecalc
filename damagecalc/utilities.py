@@ -63,7 +63,7 @@ class vulnerability_curve():
 
         return in_range
 
-def calculate_damage_costs(file_path: str, output_file: str, input_function, newline='', starting_index=1):
+def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerability_curve, newline='', starting_index=1):
     '''Reads data rows in a .csv file and calls input_function() for every row. The output values can be found in damagecalc_results.csv'''
     cost_output = 0
     count = 0
@@ -79,7 +79,7 @@ def calculate_damage_costs(file_path: str, output_file: str, input_function, new
                 if len(row) > 1:
                     raise ValueError('Depth value files should only contain one column. Instead found row with {} elements.'.format(len(row)))
 
-                result = input_function(row[0])
+                result = curve.get_flood_damage_value(row[0])
                 writer.writerow({ 'depth': row[0], 'damage_cost': result })
                 cost_output += result
                 count += 1
