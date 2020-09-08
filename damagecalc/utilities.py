@@ -14,12 +14,11 @@ class vulnerability_curve():
         self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
         self.min, self.max = self.__get_min_and_max_values()
 
-    # ? Probably the most straightforward approach.
     def get_flood_damage_value(self, depth):
         '''Iterates through all of the curve\'s depth ranges and assigns a cost value to the input depth.'''
         i = 0
-
         cost_value = None
+
         for row in self.depth_ranges:  # ! This is definitely a bottleneck.
             is_in_range = self.__is_value_in_range(row[0], row[1], depth)
             if is_in_range:
@@ -27,22 +26,18 @@ class vulnerability_curve():
                 break
             i += 1
 
-        if cost_value is None:
-            logging.warning(
-                'depth value of {} doesn\'t have an assigned cost.'.format(depth))
-
         return cost_value
 
     def __validate_and_get_depth_ranges(self, input_data: list):
-        '''Returns None if any data row is not of length 3 - otherwise, returns the input list.'''
+        '''Returns the input list if no exceptions are thrown.'''
         output = None
 
         # ? If any rows are not of length 3.
         if any(not len(row) == 3 for row in input_data):
             raise ValueError(
                 'Row lengths of 3 are required to instantiate a vulnerability_curve object.')
-        else:
-            output = input_data
+
+        output = input_data
 
         return output
 
@@ -89,9 +84,10 @@ class vulnerability_curve():
 
 
 def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerability_curve, newline='', starting_index=1):
-    '''Reads depth values from file_path and cross references the input vulnerability curve ranges for every row. The output values can be found in out_put_file'''
+    '''Reads depth values from file_path and cross references the input vulnerability curve ranges for every row. The output values can be found in output_file'''
     cost_output = 0
-    count = 0
+    nominal_count = 0
+    skipped = 0
 
     with open(output_file, 'w', newline='') as fo:
         fieldnames = ['depth', 'damage_cost']
@@ -101,13 +97,22 @@ def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerabilit
         with open(file_path, newline='') as f:
             reader = csv.reader(f)
             for row in list(reader)[starting_index:]:
-                if len(row) > 1:
-                    raise ValueError(
-                        'Depth value files should only contain one column. Instead found row with {} elements.'.format(len(row)))
+                if len(row) == 1:
+                    result = curve.get_flood_damage_value(row[0])
 
-                result = curve.get_flood_damage_value(row[0])
-                writer.writerow({'depth': row[0], 'damage_cost': result})
-                cost_output += result
-                count += 1
+                    if type(result) is float:
+                        writer.writerow(
+                            {'depth': row[0], 'damage_cost': result})
+                        cost_output += result
+                        nominal_count += 1
+                    elif result is None:
+                        skipped += 1
+                        logging.warning('None result obtained from row value: {}'.format(str(row[0])))
+                    else:
+                        raise TypeError('utilities.calculate_damage_costs() has managed to calculate an invalid type.')
+                else:
+                    skipped += 1
+                    logging.warning(
+                        'Depth value files should contain rows of length 1. Instead found row with {} elements.'.format(len(row)))
 
-    return cost_output, count
+    return cost_output, nominal_count, skipped

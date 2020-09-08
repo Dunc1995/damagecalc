@@ -51,15 +51,16 @@ def run_script(input_vulnerability_curve: str, input_depths: str, output_file: s
     '''Use this function if importing damagecalc for another script.'''
 
     vc = utils.vulnerability_curve(input_vulnerability_curve)
-    total_cost, count = utils.calculate_damage_costs(
+    total_cost, count, ignored = utils.calculate_damage_costs(
         input_depths, output_file, vc)
 
     print('''
     -----------------------------
     Total Cost: {}{:,.2f}
     Depth Values Processed: {}
+    Skipped Values: {} (This should always be zero)
     -----------------------------
-    '''.format(currency, total_cost, count))
+    '''.format(currency, total_cost, count, ignored))
 
 
 def main():
