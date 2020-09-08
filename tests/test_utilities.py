@@ -105,3 +105,19 @@ class TestUtilities(unittest.TestCase):
         # Assert
         with self.assertRaises(Exception):
             utils.vulnerability_curve(example_curve_data)
+
+    def test_exception_is_raised_when_input_file_does_not_exist(self):
+        # Assume
+        file_path = './none_existent_file.csv'
+
+        # Assert
+        with self.assertRaises(FileNotFoundError):
+            utils.check_file_exists(file_path)
+
+    def test_exception_is_raised_when_file_is_not_csv(self):
+        # Assume
+        file_path = './not_a_csv.txt'
+
+        # Assert
+        with self.assertRaises(Exception):
+            utils.check_is_file_csv(file_path)

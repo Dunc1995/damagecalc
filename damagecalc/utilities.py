@@ -1,5 +1,6 @@
 import logging
 import csv
+import os
 
 
 class vulnerability_curve():
@@ -29,15 +30,21 @@ class vulnerability_curve():
         return cost_value
 
     def __validate_and_get_depth_ranges(self, input_data: list):
-        '''Returns the input list if no exceptions are thrown.'''
-        output = None
+        '''Returns the input list as float types if no exceptions are thrown.'''
+        output = []
 
         # ? If any rows are not of length 3.
         if any(not len(row) == 3 for row in input_data):
             raise ValueError(
                 'Row lengths of 3 are required to instantiate a vulnerability_curve object.')
 
-        output = input_data
+        for row in input_data:
+            float_row = []
+
+            for entry in row:
+                float_row.append(float(entry))
+
+            output.append(float_row)
 
         return output
 
@@ -66,7 +73,7 @@ class vulnerability_curve():
 
         return output
 
-    def __is_value_in_range(self, lower_limit: int, upper_limit: int, depth):
+    def __is_value_in_range(self, lower_limit: float, upper_limit: float, depth):
         '''Tests whether a given depth value is within the specified integer range. Returns true or false.'''
         lower_limit_float = float(lower_limit)
         upper_limit_float = float(upper_limit)
@@ -107,12 +114,27 @@ def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerabilit
                         nominal_count += 1
                     elif result is None:
                         skipped += 1
-                        logging.warning('None result obtained from row value: {}'.format(str(row[0])))
+                        logging.warning(
+                            'None result obtained from row value: {}'.format(str(row[0])))
                     else:
-                        raise TypeError('utilities.calculate_damage_costs() has managed to calculate an invalid type.')
+                        raise TypeError(
+                            'utilities.calculate_damage_costs() has managed to calculate an invalid type.')
                 else:
                     skipped += 1
                     logging.warning(
                         'Depth value files should contain rows of length 1. Instead found row with {} elements.'.format(len(row)))
 
     return cost_output, nominal_count, skipped
+
+
+def check_is_file_csv(file_path: str):
+
+    if not file_path.endswith('.csv'):
+        raise Exception(
+            'Cannot use {} - This program can only parse and output .csv files.'.format(file_path))
+
+
+def check_file_exists(file_path: str):
+
+    if not os.path.exists(file_path):
+        raise FileNotFoundError('{} does not exist.'.format(file_path))

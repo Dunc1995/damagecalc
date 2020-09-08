@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "damagecalc",
-            "args": [ "-i", "depths.csv", "-c", "vulnerability_curve.csv" ],
+            "args": [ "-d", "depths.csv", "-vc", "vulnerability_curve.csv" ],
             "env": { "PYTHONPATH": "${workspaceRoot}" },
             "console": "integratedTerminal"
         }
