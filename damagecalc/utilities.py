@@ -4,13 +4,15 @@ import csv
 
 
 class vulnerability_curve():
-    def __init__(self, file_path: str):
-        csv_rows = self.__get_list_from_csv(file_path)
-        self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
-        self.min, self.max = self.__get_min_and_max_values()
+    def __init__(self, input_obj):
+        csv_rows = None
 
-    def __init__(self, input_list: list):
-        self.depth_ranges = self.__validate_and_get_depth_ranges(input_list)
+        if type(input_obj) is str:
+            csv_rows = self.__get_list_from_csv(input_obj)
+        elif type(input_obj) is list:
+            csv_rows = input_obj
+        
+        self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
         self.min, self.max = self.__get_min_and_max_values()
 
     # ? Probably the most straightforward approach.
