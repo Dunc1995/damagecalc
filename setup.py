@@ -5,7 +5,7 @@ setup(
     name="Flood_Damage_Calculator",
 
     # Version number (initial):
-    version="0.1.0",
+    version="1.0.0",
 
     # Application author details:
     author="Duncan Bailey",
