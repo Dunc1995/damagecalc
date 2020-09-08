@@ -1,5 +1,4 @@
 import logging
-import json
 import csv
 
 
@@ -11,7 +10,7 @@ class vulnerability_curve():
             csv_rows = self.__get_list_from_csv(input_obj)
         elif type(input_obj) is list:
             csv_rows = input_obj
-        
+
         self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
         self.min, self.max = self.__get_min_and_max_values()
 
@@ -23,12 +22,12 @@ class vulnerability_curve():
         cost_value = None
         for row in self.depth_ranges:  # ! This is definitely a bottleneck.
             is_in_range = self.__is_value_in_range(row[0], row[1], depth)
-            if is_in_range == True:
+            if is_in_range:
                 cost_value = float(self.depth_ranges[i][2])
                 break
             i += 1
 
-        if cost_value == None:
+        if cost_value is None:
             logging.warning(
                 'depth value of {} doesn\'t have an assigned cost.'.format(depth))
 

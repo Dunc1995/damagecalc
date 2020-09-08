@@ -23,14 +23,14 @@ setup(
     #
     license="LICENSE",
     description="Coding challenge for a Python Developer job application.",
-    #long_description=open("README.txt").read(),
+    # long_description=open("README.txt").read(),
 
     # Dependent packages (distributions)
-    install_requires=[ ],
+    # install_requires=[ ],
 
     entry_points={
-    'console_scripts': [
-        'damagecalc = damagecalc.damagecalc:main'
-    ]
+        'console_scripts': [
+            'damagecalc = damagecalc.damagecalc:main'
+        ]
     }
 )
