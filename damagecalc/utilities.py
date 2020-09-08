@@ -2,34 +2,39 @@ import logging
 import json
 import csv
 
+
 class vulnerability_curve():
     def __init__(self, file_path: str):
         csv_rows = self.__get_list_from_csv(file_path)
         self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
 
-    def get_flood_damage_value(self, depth): #? Probably the most straightforward approach.
+    # ? Probably the most straightforward approach.
+    def get_flood_damage_value(self, depth):
         '''Iterates through all of the curve\'s depth ranges and assigns a cost value to the input depth.'''
         i = 0
 
         cost_value = None
-        for row in self.depth_ranges: #! This is definitely a bottleneck.
+        for row in self.depth_ranges:  # ! This is definitely a bottleneck.
             is_in_range = self.__is_value_in_range(row[0], row[1], depth)
             if is_in_range == True:
                 cost_value = float(self.depth_ranges[i][2])
-                break            
+                break
             i += 1
 
         if cost_value == None:
-            logging.warning('depth value of {} doesn\'t have an assigned cost.'.format(depth))
+            logging.warning(
+                'depth value of {} doesn\'t have an assigned cost.'.format(depth))
 
         return cost_value
 
     def __validate_and_get_depth_ranges(self, input_data: list):
         '''Returns None if any data row is not of length 3 - otherwise, returns the input list.'''
         output = None
-        
-        if any(not len(row) == 3 for row in input_data): #? If any rows are not of length 3.
-            raise ValueError('Row lengths of 3 are required to instantiate a vulnerability_curve object.')
+
+        # ? If any rows are not of length 3.
+        if any(not len(row) == 3 for row in input_data):
+            raise ValueError(
+                'Row lengths of 3 are required to instantiate a vulnerability_curve object.')
         else:
             output = input_data
 
@@ -42,7 +47,8 @@ class vulnerability_curve():
         try:
             with open(file_path, newline='') as f:
                 reader = csv.reader(f)
-                for row in list(reader)[starting_index:]: #? Starting index omits the headings from the csv
+                # ? Starting index omits the headings from the csv
+                for row in list(reader)[starting_index:]:
                     output.append(row)
         except Exception as e:
             raise Exception('Unable to read {}: {}'.format(file_path, str(e)))
@@ -56,15 +62,18 @@ class vulnerability_curve():
         depth_float = float(depth)
 
         if lower_limit_float > upper_limit_float:
-            raise Exception('Error at __is_value_in_range - your lower limit cannot be greater than your upper limit!\n lower_limit: {}, upper_limit: {}'.format(lower_limit, upper_limit))
+            raise Exception(
+                'Error at __is_value_in_range - your lower limit cannot be greater than your upper limit!\n lower_limit: {}, upper_limit: {}'.format(lower_limit, upper_limit))
         in_range = lower_limit_float < depth_float <= upper_limit_float
 
-        logging.debug({ 'lower_limit': lower_limit_float, 'upper_limit': upper_limit_float, 'depth': depth, 'in_range': in_range })
+        logging.debug({'lower_limit': lower_limit_float,
+                       'upper_limit': upper_limit_float, 'depth': depth, 'in_range': in_range})
 
         return in_range
 
+
 def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerability_curve, newline='', starting_index=1):
-    '''Reads depth values from file_path and cross references the input vulnerability curve ranges for every row. The output values can be found in output_file'''
+    '''Reads depth values from file_path and cross references the input vulnerability curve ranges for every row. The output values can be found in out_put_file'''
     cost_output = 0
     count = 0
 
@@ -77,12 +86,12 @@ def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerabilit
             reader = csv.reader(f)
             for row in list(reader)[starting_index:]:
                 if len(row) > 1:
-                    raise ValueError('Depth value files should only contain one column. Instead found row with {} elements.'.format(len(row)))
+                    raise ValueError(
+                        'Depth value files should only contain one column. Instead found row with {} elements.'.format(len(row)))
 
                 result = curve.get_flood_damage_value(row[0])
-                writer.writerow({ 'depth': row[0], 'damage_cost': result })
+                writer.writerow({'depth': row[0], 'damage_cost': result})
                 cost_output += result
                 count += 1
-    
+
     return cost_output, count
-    

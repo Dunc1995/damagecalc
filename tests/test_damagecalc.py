@@ -1,6 +1,7 @@
 import unittest
 import damagecalc.damagecalc as damagecalc
 
+
 class TestDamageCalc(unittest.TestCase):
 
     def test_exception_is_raised_when_input_file_does_not_exist(self):
