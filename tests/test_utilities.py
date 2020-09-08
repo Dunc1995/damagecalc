@@ -29,7 +29,7 @@ class TestUtilities(unittest.TestCase):
         self.test_output = join(self.test_data_root, 'testing.csv')
 
     def test_total_cost_is_correct_for_normal_data(self):
-        
+
         # Assume
         actual_total_cost = 1086500.0
 
