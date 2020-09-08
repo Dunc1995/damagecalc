@@ -27,17 +27,33 @@ class TestUtilities(unittest.TestCase):
 
     def test_value_error_is_raised_when_unusual_row_length_is_found(self):
 
-        with self.assertRaises(ValueError) as value_error:
+        with self.assertRaises(ValueError):
             utils.calculate_damage_costs(
                 self.inconsistent_data_rows, self.test_output, self.vulnerability_curve_class)
 
     def test_value_error_is_raised_when_non_numeric_is_found(self):
 
-        with self.assertRaises(ValueError) as value_error:
+        with self.assertRaises(ValueError):
             utils.calculate_damage_costs(
                 self.non_numerical_values, self.test_output, self.vulnerability_curve_class)
 
     def test_exception_is_raised_when_invalid_data_is_passed_to_vulnerability_curve(self):
 
-        with self.assertRaises(ValueError) as value_error:
+        with self.assertRaises(ValueError):
             utils.vulnerability_curve(self.nonsense_vulnerability_curve)
+
+    def test_min_and_max_values_are_returned_correctly_from_vulnerability_curve_data(self):
+        #Assume
+        example_curve_data = [
+            [1, 2, 200],
+            [2, 3, 400],
+            [3, 4, 600],
+            [4, 5, 800]
+        ]
+
+        #Action
+        curve = utils.vulnerability_curve(example_curve_data)
+
+        #Assert
+        self.assertTrue(curve.max == 5)
+        self.assertTrue(curve.min == 1)

@@ -9,7 +9,7 @@ class TestDamageCalc(unittest.TestCase):
         file_path = './none_existent_file.csv'
 
         #Assert
-        with self.assertRaises(FileNotFoundError) as fnfe:
+        with self.assertRaises(FileNotFoundError):
             damagecalc.check_file_exists(file_path)
 
     def test_exception_is_raised_when_file_is_not_csv(self):
@@ -17,5 +17,5 @@ class TestDamageCalc(unittest.TestCase):
         file_path = './not_a_csv.txt'
 
         #Assert
-        with self.assertRaises(Exception) as ncsv:
+        with self.assertRaises(Exception):
             damagecalc.check_is_file_csv(file_path)

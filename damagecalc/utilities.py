@@ -7,6 +7,11 @@ class vulnerability_curve():
     def __init__(self, file_path: str):
         csv_rows = self.__get_list_from_csv(file_path)
         self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
+        self.min, self.max = self.__get_min_and_max_values()
+
+    def __init__(self, input_list: list):
+        self.depth_ranges = self.__validate_and_get_depth_ranges(input_list)
+        self.min, self.max = self.__get_min_and_max_values()
 
     # ? Probably the most straightforward approach.
     def get_flood_damage_value(self, depth):
@@ -39,6 +44,16 @@ class vulnerability_curve():
             output = input_data
 
         return output
+
+    def __get_min_and_max_values(self):
+        '''Gets the upper bound and lower bound for the vulnerability curve.'''
+
+        all_values = []
+        for row in self.depth_ranges:
+            all_values.append(row[0])
+            all_values.append(row[1])
+
+        return min(all_values), max(all_values)
 
     def __get_list_from_csv(self, file_path: str, newline='', starting_index=1):
         '''Reads a csv file and returns its contents as a list object.'''
