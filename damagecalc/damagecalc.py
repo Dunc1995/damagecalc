@@ -38,7 +38,7 @@ def run_script(input_vulnerability_curve: str, input_depths: str, output_file: s
     '''Use this function if importing damagecalc for another script.'''
 
     vc = utils.vulnerability_curve(input_vulnerability_curve)
-    total_cost, count = utils.calculate_damage_costs(input_depths, output_file, vc.get_flood_damage_value)
+    total_cost, count = utils.calculate_damage_costs(input_depths, output_file, vc)
 
     print('''
     -----------------------------

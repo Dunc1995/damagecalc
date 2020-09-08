@@ -64,7 +64,7 @@ class vulnerability_curve():
         return in_range
 
 def calculate_damage_costs(file_path: str, output_file: str, curve: vulnerability_curve, newline='', starting_index=1):
-    '''Reads data rows in a .csv file and calls input_function() for every row. The output values can be found in damagecalc_results.csv'''
+    '''Reads depth values from file_path and cross references the input vulnerability curve ranges for every row. The output values can be found in output_file'''
     cost_output = 0
     count = 0
 

@@ -23,12 +23,12 @@ class TestUtilities(unittest.TestCase):
     def test_value_error_is_raised_when_unusual_row_length_is_found(self):
 
             with self.assertRaises(ValueError) as value_error:
-                utils.calculate_damage_costs(self.inconsistent_data_rows, self.test_output, self.vulnerability_curve_class.get_flood_damage_value)
+                utils.calculate_damage_costs(self.inconsistent_data_rows, self.test_output, self.vulnerability_curve_class)
 
     def test_value_error_is_raised_when_non_numeric_is_found(self):
 
         with self.assertRaises(ValueError) as value_error:
-            utils.calculate_damage_costs(self.non_numerical_values, self.test_output, self.vulnerability_curve_class.get_flood_damage_value)
+            utils.calculate_damage_costs(self.non_numerical_values, self.test_output, self.vulnerability_curve_class)
 
     def test_exception_is_raised_when_invalid_data_is_passed_to_vulnerability_curve(self):
 
