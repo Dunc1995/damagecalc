@@ -4,15 +4,13 @@ import csv
 
 class vulnerability_curve():
     def __init__(self, file_path: str):
-        try:
-            csv_rows = self.__get_list_from_csv(file_path)
-            self.depth_ranges = self.__get_depth_ranges(csv_rows)
-        except Exception as e:
-            logging.fatal(str(e))
+        csv_rows = self.__get_list_from_csv(file_path)
+        self.depth_ranges = self.__validate_and_get_depth_ranges(csv_rows)
 
     def get_flood_damage_value(self, depth): #? Probably the most straightforward approach.
         '''Iterates through all of the curve\'s depth ranges and assigns a cost value to the input depth.'''
         i = 0
+
         cost_value = None
         for row in self.depth_ranges: #! This is definitely a bottleneck.
             is_in_range = self.__is_value_in_range(row[0], row[1], depth)
@@ -26,7 +24,7 @@ class vulnerability_curve():
 
         return cost_value
 
-    def __get_depth_ranges(self, input_data: list):
+    def __validate_and_get_depth_ranges(self, input_data: list):
         '''Returns None if any data row is not of length 3 - otherwise, returns the input list.'''
         output = None
         
@@ -47,8 +45,7 @@ class vulnerability_curve():
                 for row in list(reader)[starting_index:]: #? Starting index omits the headings from the csv
                     output.append(row)
         except Exception as e:
-            output = None
-            logging.fatal('Unable to read {}: {}'.format(file_path, str(e)))
+            raise Exception('Unable to read {}: {}'.format(file_path, str(e)))
 
         return output
 
