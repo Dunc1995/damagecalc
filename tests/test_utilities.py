@@ -90,8 +90,24 @@ class TestUtilities(unittest.TestCase):
         curve = utils.vulnerability_curve(example_curve_data)
 
         # Assert
-        self.assertTrue(curve.max == 5)
-        self.assertTrue(curve.min == 1)
+        self.assertEqual(curve.max, float(5))
+        self.assertEqual(curve.min, float(1))
+
+    def test_min_and_max_values_are_returned_correctly_from_integer_float_combination(self):
+        # Assume
+        example_curve_data = [
+            [-1, -2.9, 200],
+            [2, 7, 400],
+            [3, 4, 600],
+            [4, 5.0, 800]
+        ]
+
+        # Action
+        curve = utils.vulnerability_curve(example_curve_data)
+
+        # Assert
+        self.assertEqual(curve.max, float(7.0))
+        self.assertEqual(curve.min, float(-2.9))
 
     def test_exception_is_raised_when_curve_data_contains_string(self):
         # Assume
